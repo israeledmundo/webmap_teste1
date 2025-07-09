@@ -441,6 +441,81 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 64px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 3000;
+            padding: 0 32px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .navbar-logo {
+            height: 44px;
+            width: auto;
+            margin-right: 10px;
+        }
+        .navbar-separator {
+            width: 2px;
+            height: 36px;
+            background: #e0e0e0;
+            margin: 0 18px 0 0;
+        }
+        .navbar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #19335c;
+            letter-spacing: 0.5px;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar-btn {
+            background: none;
+            border: none;
+            color: #19335c;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 18px 6px 18px;
+            border-radius: 0;
+            cursor: pointer;
+            border-bottom: 2.5px solid transparent;
+            transition: color 0.2s, border-bottom 0.2s;
+        }
+        .navbar-btn.active {
+            color: #f9a825;
+            border-bottom: 2.5px solid #f9a825;
+        }
+        .navbar-btn.download {
+            color: #19335c;
+        }
+        .navbar-btn.ajuda {
+            color: #888;
+        }
+        .navbar-btn:hover, .navbar-btn:focus {
+            background: #f5f5f5;
+        }
+        @media (max-width: 600px) {
+            .top-navbar { padding: 0 8px; height: 54px; }
+            .navbar-title { font-size: 14px; }
+            .navbar-logo { height: 28px; }
+            .navbar-btn { font-size: 13px; padding: 6px 8px 4px 8px; }
+            .navbar-separator { height: 24px; margin-right: 8px; }
+        }
+        body { padding-top: 64px !important; }
+        @media (max-width: 600px) { body { padding-top: 54px !important; } }
     </style>
 </head>
 <body>
@@ -448,13 +523,14 @@
     <header class="top-navbar">
         <div class="navbar-left">
             <img src="logo-rhim.png" alt="Logo RHIM" class="navbar-logo">
+            <div class="navbar-separator"></div>
             <span class="navbar-title">RHIM WebGIS</span>
         </div>
-        <div class="navbar-right">
-            <button class="navbar-btn" onclick="window.location.href='index.html'">WebGIS</button>
-            <button class="navbar-btn" onclick="window.location.href='README.md'">Download</button>
-            <button class="navbar-btn" onclick="window.location.href='exemplos-atributos.md'">Ajuda</button>
-        </div>
+        <nav class="navbar-right">
+            <button class="navbar-btn active">WebGIS</button>
+            <button class="navbar-btn download">Download</button>
+            <button class="navbar-btn ajuda">Ajuda</button>
+        </nav>
     </header>
     <div id="map"></div>
     <!-- Controle de Zoom Compacto -->
