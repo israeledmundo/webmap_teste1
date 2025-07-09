@@ -529,6 +529,29 @@
         }
         body { padding-top: 72px !important; }
         @media (max-width: 600px) { body { padding-top: 62px !important; } }
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 0 6px 2px;
+            font-size: 16px;
+            user-select: none;
+        }
+        .accordion-arrow {
+            font-size: 14px;
+            margin-right: 8px;
+            transition: transform 0.2s;
+        }
+        .accordion-content {
+            padding-left: 18px;
+            margin-bottom: 6px;
+        }
+        .layer-group .layer-item {
+            margin-left: 0;
+        }
+        .layer-item {
+            padding-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -583,19 +606,26 @@
             <!-- Layers Section -->
             <div class="sidebar-section layers-section">
                 <h3>Camadas de Dados</h3>
-                <div class="layer-group" id="layers-container">
-                    <div class="loading">Carregando camadas...</div>
+            </div>
+            <!-- Propriedades RHIM Section (Accordion) -->
+            <div class="sidebar-section">
+                <div class="accordion-title" onclick="toggleAccordion('propriedades-accordion')">
+                    <span class="accordion-arrow" id="arrow-propriedades">▼</span>
+                    <b>Propriedades RHIM</b>
+                </div>
+                <div class="accordion-content" id="propriedades-accordion">
+                    <div class="layer-group" id="propriedades-container"></div>
                 </div>
             </div>
-            <!-- Propriedades RHIM Section -->
+            <!-- Dados Ambientais Section (Accordion) -->
             <div class="sidebar-section">
-                <h3>Propriedades RHIM</h3>
-                <div class="layer-group" id="propriedades-container"></div>
-            </div>
-            <!-- Dados Ambientais Section -->
-            <div class="sidebar-section">
-                <h3>Dados Ambientais</h3>
-                <div class="layer-group" id="ambientais-container"></div>
+                <div class="accordion-title" onclick="toggleAccordion('ambientais-accordion')">
+                    <span class="accordion-arrow" id="arrow-ambientais">▼</span>
+                    <b>Dados Ambientais</b>
+                </div>
+                <div class="accordion-content" id="ambientais-accordion">
+                    <div class="layer-group" id="ambientais-container"></div>
+                </div>
             </div>
             
             <!-- Global Controls Section -->
@@ -644,5 +674,18 @@
 
     <script src="config.js"></script>
     <script src="webgis.js"></script>
+    <script>
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const arrow = document.getElementById('arrow-' + id.split('-')[0]);
+        if (content.style.display === 'none') {
+            content.style.display = '';
+            arrow.style.transform = 'rotate(0deg)';
+        } else {
+            content.style.display = 'none';
+            arrow.style.transform = 'rotate(-90deg)';
+        }
+    }
+    </script>
 </body>
 </html> 
