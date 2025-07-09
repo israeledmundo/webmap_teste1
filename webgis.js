@@ -311,22 +311,35 @@ class WebGIS {
 
     async loadGeoJSONFiles() {
         const geojsonFiles = [
-            'GEOJSON/dm_rhim_2025.geojson',
             'GEOJSON/propriedades_RHIM_mg_merge.geojson',
-            'GEOJSON/reservalegal_RHIM_mg_merge.geojson'
+            'GEOJSON/propriedades_RHIM_ba_merge.geojson',
+            'GEOJSON/reservalegal_RHIM_mg_merge.geojson',
+            'GEOJSON/reservalegal_RHIM_ba_merge.geojson'
         ];
-
-        const colors = ['#ffffff', '#ffff00', '#00ff00']; // Branco, Amarelo, Verde
-        const names = ['DM RHIM 2025', 'Propriedades RHIM MG', 'Reserva Legal RHIM MG'];
-
+        const colors = [
+            '#ffff00', // Propriedades RHIM MG
+            '#ffb300', // Propriedades RHIM BA (laranja)
+            '#00ff00', // Reserva Legal RHIM MG
+            '#00b894'  // Reserva Legal RHIM BA (verde)
+        ];
+        const names = [
+            'Propriedades RHIM MG',
+            'Propriedades RHIM BA',
+            'Reserva Legal RHIM MG',
+            'Reserva Legal RHIM BA'
+        ];
+        const containers = [
+            'propriedades-container',
+            'propriedades-container',
+            'ambientais-container',
+            'ambientais-container'
+        ];
         for (let i = 0; i < geojsonFiles.length; i++) {
             try {
                 const response = await fetch(geojsonFiles[i]);
                 if (response.ok) {
                     const geojsonData = await response.json();
-                    this.addGeoJSONLayer(geojsonData, names[i], colors[i]);
-                    
-                    // Armazenar dados para visualização de atributos
+                    this.addGeoJSONLayer(geojsonData, names[i], colors[i], containers[i]);
                     this.attributesData[names[i]] = geojsonData.features || [];
                 } else {
                     console.warn(`Não foi possível carregar: ${geojsonFiles[i]}`);
@@ -337,7 +350,7 @@ class WebGIS {
         }
     }
 
-    addGeoJSONLayer(geojsonData, name, color) {
+    addGeoJSONLayer(geojsonData, name, color, containerId = 'layers-container') {
         const layer = L.geoJSON(geojsonData, {
             style: {
                 fillColor: color,
@@ -361,9 +374,7 @@ class WebGIS {
         });
 
         layer.addTo(this.map);
-        
-        // Adicionar controle de camada
-        this.addLayerControl(layer, name);
+        this.addLayerControl(layer, name, containerId);
     }
 
     createPopupContent(properties, layerName) {
@@ -379,15 +390,13 @@ class WebGIS {
         return content;
     }
 
-    addLayerControl(layer, name) {
-        const layersContainer = document.getElementById('layers-container');
-        
+    addLayerControl(layer, name, containerId = 'layers-container') {
+        const layersContainer = document.getElementById(containerId);
         // Remove loading message if exists
         const loading = layersContainer.querySelector('.loading');
         if (loading) {
             loading.remove();
         }
-
         const layerItem = document.createElement('div');
         layerItem.className = 'layer-item';
         layerItem.innerHTML = `
@@ -396,20 +405,13 @@ class WebGIS {
                 <span class="layer-name">${name}</span>
             </div>
             <div class="layer-actions">
-                <button class="layer-btn attributes" title="Ver atributos de ${name}">
-                    📊
-                </button>
-                <button class="layer-btn info" title="Informações de ${name}">
-                    ℹ️
-                </button>
+                <button class="layer-btn attributes" title="Ver atributos de ${name}">📊</button>
+                <button class="layer-btn info" title="Informações de ${name}">ℹ️</button>
             </div>
         `;
-
         const checkbox = layerItem.querySelector('.layer-checkbox');
         const attributesBtn = layerItem.querySelector('.layer-btn.attributes');
         const infoBtn = layerItem.querySelector('.layer-btn.info');
-
-        // Layer visibility toggle
         checkbox.addEventListener('change', (e) => {
             if (e.target.checked) {
                 layer.addTo(this.map);
@@ -417,17 +419,12 @@ class WebGIS {
                 this.map.removeLayer(layer);
             }
         });
-
-        // Attributes button
         attributesBtn.addEventListener('click', () => {
             this.showAttributesTable(name, this.attributesData[name] || []);
         });
-
-        // Info button
         infoBtn.addEventListener('click', () => {
             this.showLayerInfo(name, this.attributesData[name] || []);
         });
-
         layersContainer.appendChild(layerItem);
     }
 
