@@ -329,10 +329,10 @@ class WebGIS {
             'Reserva Legal RHIM BA'
         ];
         const containers = [
-            'propriedades-container',
-            'propriedades-container',
-            'ambientais-container',
-            'ambientais-container'
+            'propriedades-mg-container',
+            'propriedades-ba-container',
+            'ambientais-mg-container',
+            'ambientais-ba-container'
         ];
         for (let i = 0; i < geojsonFiles.length; i++) {
             try {

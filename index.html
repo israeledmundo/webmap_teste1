@@ -537,6 +537,10 @@
             font-size: 16px;
             user-select: none;
         }
+        .accordion-title.sub {
+            font-size: 15px;
+            padding-left: 16px;
+        }
         .accordion-arrow {
             font-size: 14px;
             margin-right: 8px;
@@ -614,7 +618,20 @@
                     <b>Propriedades RHIM</b>
                 </div>
                 <div class="accordion-content" id="propriedades-accordion">
-                    <div class="layer-group" id="propriedades-container"></div>
+                    <div class="accordion-title sub" onclick="toggleAccordion('propriedades-mg')">
+                        <span class="accordion-arrow" id="arrow-propriedades-mg">▼</span>
+                        <b>MINAS GERAIS</b>
+                    </div>
+                    <div class="accordion-content" id="propriedades-mg">
+                        <div class="layer-group" id="propriedades-mg-container"></div>
+                    </div>
+                    <div class="accordion-title sub" onclick="toggleAccordion('propriedades-ba')">
+                        <span class="accordion-arrow" id="arrow-propriedades-ba">▼</span>
+                        <b>BAHIA</b>
+                    </div>
+                    <div class="accordion-content" id="propriedades-ba">
+                        <div class="layer-group" id="propriedades-ba-container"></div>
+                    </div>
                 </div>
             </div>
             <!-- Dados Ambientais Section (Accordion) -->
@@ -624,7 +641,20 @@
                     <b>Dados Ambientais</b>
                 </div>
                 <div class="accordion-content" id="ambientais-accordion">
-                    <div class="layer-group" id="ambientais-container"></div>
+                    <div class="accordion-title sub" onclick="toggleAccordion('ambientais-mg')">
+                        <span class="accordion-arrow" id="arrow-ambientais-mg">▼</span>
+                        <b>MINAS GERAIS</b>
+                    </div>
+                    <div class="accordion-content" id="ambientais-mg">
+                        <div class="layer-group" id="ambientais-mg-container"></div>
+                    </div>
+                    <div class="accordion-title sub" onclick="toggleAccordion('ambientais-ba')">
+                        <span class="accordion-arrow" id="arrow-ambientais-ba">▼</span>
+                        <b>BAHIA</b>
+                    </div>
+                    <div class="accordion-content" id="ambientais-ba">
+                        <div class="layer-group" id="ambientais-ba-container"></div>
+                    </div>
                 </div>
             </div>
             
@@ -677,13 +707,13 @@
     <script>
     function toggleAccordion(id) {
         const content = document.getElementById(id);
-        const arrow = document.getElementById('arrow-' + id.split('-')[0]);
+        const arrow = document.getElementById('arrow-' + id);
         if (content.style.display === 'none') {
             content.style.display = '';
-            arrow.style.transform = 'rotate(0deg)';
+            if (arrow) arrow.style.transform = 'rotate(0deg)';
         } else {
             content.style.display = 'none';
-            arrow.style.transform = 'rotate(-90deg)';
+            if (arrow) arrow.style.transform = 'rotate(-90deg)';
         }
     }
     </script>
